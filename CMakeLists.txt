@@ -12,13 +12,15 @@ set(PROJECT_NAME hello_w)
 project(${PROJECT_NAME} LANGUAGES CXX CUDA)
 
 find_package(CUDA REQUIRED)
-include_directories("${CUDA_INCLUDE_DIRS}")
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
   set(CMAKE_CUDA_ARCHITECTURES 86)    # RTX 3070
 endif()
 
 add_executable(${PROJECT_NAME} helloworld.cu)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CUDA_INCLUDE_DIRS} ${OpenMP_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${CUDA_LIBRARIES} ${OpenMP_CXX_LIBRARIES})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
